@@ -28,3 +28,6 @@ node_modules
 
 # IntelliJ
 .idea
+
+# RethinkDB
+rethinkdb_data
