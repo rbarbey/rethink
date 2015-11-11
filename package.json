@@ -1,0 +1,23 @@
+{
+  "name": "rethink",
+  "version": "1.0.0",
+  "description": "TODO backend with RethinkDB and news feeds",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbarbey/rethink.git"
+  },
+  "keywords": [],
+  "author": "Robert Barbey <robert.barbey@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rbarbey/rethink/issues"
+  },
+  "homepage": "https://github.com/rbarbey/rethink#readme",
+  "dependencies": {
+    "rethinkdb": "2.1.1"
+  }
+}
