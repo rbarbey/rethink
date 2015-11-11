@@ -15,8 +15,10 @@ var config = {
 
 r.connect(config)
   .then(function (conn) {
+    console.info('Connected to RethinkDB at', config);
     return r.table('authors').changes().run(conn);
   })
   .then(function (cursor) {
-    cursor.each(consol.log);
+    console.info('Received update');
+    cursor.each(console.log);
   });
