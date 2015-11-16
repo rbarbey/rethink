@@ -26,6 +26,10 @@ var todoSchema = Joi.object().keys({
   completed: Joi.boolean().default(false)
 });
 
+function createUrl(todo, req) {
+  return req.protocol + '://' + req.get('host') + req.originalUrl + '/' + todo.id;
+}
+
 router.get('/', function (req, res) {
   return r.table('todos').run().then(function (todos) {
     res.json(todos);
@@ -33,6 +37,16 @@ router.get('/', function (req, res) {
     console.error('Error reading TODOs from database at', config, ':', err);
     res.status(500).send();
   })
+});
+
+router.get('/:id', function (req, res) {
+  return r.table('todos').get(req.params.id).run().then(function (todo) {
+    todo.url = createUrl(todo, req);
+    res.json(todo);
+  }).error(function (err) {
+    console.error('Error finding TODO with ID', req.params.id, err);
+    res.status(500).send();
+  });
 });
 
 router.post('/', function (req, res) {
@@ -47,8 +61,8 @@ router.post('/', function (req, res) {
   return r.table('todos').insert(result.value).run().then(function (createdTodo) {
     return r.table('todos').get(createdTodo.generated_keys[0]).run()
   }).then(function (returnedTodo) {
+    returnedTodo.url = createUrl(returnedTodo, req);
     console.log('Server created todo', returnedTodo);
-    returnedTodo.url = req.protocol + '://' + req.get('host') + req.originalUrl;
     res.status(201).json(returnedTodo);
   }).error(function (err) {
     console.error('Error creating TODO', JSON.stringify(req.body), err);
