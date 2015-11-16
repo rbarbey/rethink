@@ -13,7 +13,7 @@ var r = require('rethinkdbdash')(config);
 router.use(function (req, res, next) {
   res.append('access-control-allow-origin', '*');
   res.append('access-control-allow-headers', 'Content-Type');
-  res.append('access-control-allow-methods', 'GET,POST,DELETE');
+  res.append('access-control-allow-methods', 'GET,POST,DELETE,PATCH');
 
   next();
 });
@@ -68,6 +68,19 @@ router.post('/', function (req, res) {
     console.error('Error creating TODO', JSON.stringify(req.body), err);
     res.status(500).send();
   });
+});
+
+router.patch('/:id', function (req, res) {
+  return r.table('todos')
+    .get(req.params.id)
+    .update(req.body, { returnChanges: true })
+    .run()
+    .then(function (result) {
+      var updatedTodo = result.changes[0].new_val;
+      console.log('Updated TODO',req.params.id, updatedTodo);
+      updatedTodo.url = createUrl(updatedTodo, req);
+      res.json(updatedTodo);
+    });
 });
 
 router['delete']('/', function (req, res) {
