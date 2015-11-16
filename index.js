@@ -5,20 +5,19 @@
  * Created by robert on November 11, 2015.
  */ 
  
-var r = require('rethinkdb');
+var express = require('express');
 
-var config = {
-  host: 'localhost',
-  port: 28015,
-  table: 'test'
-};
+var app = module.exports = express();
+var bodyParser = require('body-parser');
 
-r.connect(config)
-  .then(function (conn) {
-    console.info('Connected to RethinkDB at', config);
-    return r.table('authors').changes().run(conn);
-  })
-  .then(function (cursor) {
-    console.info('Received update');
-    cursor.each(console.log);
-  });
+app.on('start', function () {
+  console.log('Application ready to serve requests');
+});
+
+app.use(bodyParser.json());
+
+var todos = require('./routes/todos');
+
+app.use('/todos', todos);
+
+
