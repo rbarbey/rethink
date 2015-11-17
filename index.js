@@ -4,7 +4,9 @@
  *
  * Created by robert on November 11, 2015.
  */ 
- 
+
+'use strict';
+
 var express = require('express');
 var app = module.exports = express();
 var logger = require('morgan');

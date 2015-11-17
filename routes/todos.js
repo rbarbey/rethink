@@ -5,6 +5,8 @@
  * Created by robert on November 16, 2015.
  */ 
 
+'use strict';
+
 var router = require('express').Router();
 
 var config = require('config').rethinkdb;
@@ -45,7 +47,7 @@ router.get('/', function (req, res) {
   }).error(function (err) {
     console.error('Error reading TODOs from database at', config, ':', err);
     res.status(500).send();
-  })
+  });
 });
 
 router.get('/:id', function (req, res) {
@@ -68,7 +70,7 @@ router.post('/', function (req, res) {
   }
 
   return r.table('todos').insert(result.value).run().then(function (createdTodo) {
-    return r.table('todos').get(createdTodo.generated_keys[0]).run()
+    return r.table('todos').get(createdTodo.generated_keys[0]).run();
   }).then(function (returnedTodo) {
     returnedTodo.url = createUrl(returnedTodo, req);
     console.log('Server created todo', returnedTodo);
