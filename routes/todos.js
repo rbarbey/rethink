@@ -27,7 +27,12 @@ var todoSchema = Joi.object().keys({
 });
 
 function createUrl(todo, req) {
-  return req.protocol + '://' + req.get('host') + req.originalUrl + '/' + todo.id;
+  var requestedUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  if (requestedUrl.endsWith(todo.id)) {
+    return requestedUrl;
+  }
+
+  return requestedUrl + '/' + todo.id;
 }
 
 router.get('/', function (req, res) {
@@ -81,8 +86,8 @@ router.patch('/:id', function (req, res) {
     .run()
     .then(function (result) {
       var updatedTodo = result.changes[0].new_val;
-      console.log('Updated TODO',req.params.id, updatedTodo);
       updatedTodo.url = createUrl(updatedTodo, req);
+      console.log('Updated TODO', req.params.id, updatedTodo);
       res.json(updatedTodo);
     });
 });
