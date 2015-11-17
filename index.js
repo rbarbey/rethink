@@ -6,18 +6,18 @@
  */ 
  
 var express = require('express');
-
 var app = module.exports = express();
+var logger = require('morgan');
 var bodyParser = require('body-parser');
 
-app.on('start', function () {
-  console.log('Application ready to serve requests');
-});
-
+app.use(logger('dev'));
 app.use(bodyParser.json());
 
 var todos = require('./routes/todos');
 
 app.use('/todos', todos);
 
+app.on('start', function () {
+  console.log('Application ready to serve requests');
+});
 
