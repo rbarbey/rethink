@@ -32,7 +32,11 @@ function createUrl(todo, req) {
 
 router.get('/', function (req, res) {
   return r.table('todos').run().then(function (todos) {
-    res.json(todos);
+
+    res.json(todos.map(function (todo) {
+      todo.url = createUrl(todo, req);
+      return todo;
+    }));
   }).error(function (err) {
     console.error('Error reading TODOs from database at', config, ':', err);
     res.status(500).send();
@@ -84,8 +88,6 @@ router.patch('/:id', function (req, res) {
 });
 
 router['delete']('/', function (req, res) {
-  console.log('Client tries to delete TODO with ID', req.params.id);
-
   return r.table('todos').delete().then(function () {
     res.status(204).send();
   }).error(function (err) {
