@@ -101,4 +101,17 @@ router['delete']('/', function (req, res) {
   });
 });
 
+router.delete('/:id', function (req, res) {
+  return r.table('todos')
+    .get(req.params.id)
+    .delete()
+    .then(function () {
+      console.log('Deleted TODO with ID', req.params.id);
+      res.status(204).send();
+    }).error(function (err) {
+      console.error('Error deleting TODO with ID', req.params.id, err);
+      res.status(500).send();
+    });
+});
+
 module.exports = router;
