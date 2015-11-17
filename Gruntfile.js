@@ -4,7 +4,16 @@
  * Created by robert on November 16, 2015.
  */
 
+'use strict';
+
 var config = {
+  jshint: {
+    options: {
+      jshintrc: true
+    },
+    all: ['*.js', 'routes/*.js']
+  },
+
   nodemon: {
     dev: {
       script: 'server.js',
@@ -16,11 +25,13 @@ var config = {
 };
 
 module.exports = function (grunt) {
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-nodemon');
 
   grunt.registerTask('server', 'Starts the server and watches for changes', [
+    'jshint',
     'nodemon'
   ]);
 
-  grunt.initConfig(config)
+  grunt.initConfig(config);
 };
