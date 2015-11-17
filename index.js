@@ -19,8 +19,8 @@ function serveIndex(req, res) {
 app.use(logger('dev'));
 app.use(bodyParser.json());
 
-app.use('/', serveIndex);
 app.use('/todos', require('./routes/todos'));
+app.use('/', serveIndex);
 
 app.on('start', function () {
   console.log('Application ready to serve requests');
