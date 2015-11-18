@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <title>Rethink!</title>
 </head>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
   socket.on('update', function (data) {
-    console.log(data);
+    $('#todos').append('<li>Something happened</li>');
   });
 </script>
 <body>
