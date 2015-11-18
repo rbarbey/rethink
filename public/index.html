@@ -3,19 +3,38 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title>Rethink!</title>
-</head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
   socket.on('update', function (data) {
-    $('#todos').append('<li>Something happened</li>');
+    function getAlertClass(data) {
+      if (data.old_val == null && data.new_val) {
+        return 'alert-success';
+      }
+
+      if (data.old_val && data.new_val) {
+        return 'alert-info';
+      }
+
+      return 'alert-danger'
+    }
+
+    $('#todos').prepend('<div class="alert ' + getAlertClass(data) + '" role="alert">Something happened!</div>');
   });
 </script>
+</head>
 <body>
 
-<ul id="todos">
+  <div class="container bs-docs-container">
+    <div class="row col-md-6 col-md-offset-3">
+      <div class="bs-docs-sections">
+        <h1 id="rethink" class="page-header">Rethink your TODOs</h1>
+        <div id="todos"> </div>
+      </div>
+    </div>
+  </div>
 
-</ul>
 </body>
 </html>
